@@ -3,24 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#060a14">
-  <meta name="description" content="霓虹贪吃蛇：一个无需安装、打开即玩的浏览器小游戏。">
-  <title>霓虹贪吃蛇 · Neon Snake</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307101d'/%3E%3Cpath d='M8 22h8a6 6 0 0 0 0-12h-4' fill='none' stroke='%235cffb0' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='22' cy='10' r='2' fill='%23dffff0'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#fff7f4">
+  <meta name="description" content="糖果贪吃蛇：一个无需安装、打开即玩的可爱小游戏。">
+  <title>糖果贪吃蛇 · Candy Snake</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ffe1ec'/%3E%3Cpath d='M8 23h9a6 6 0 0 0 0-12h-4' fill='none' stroke='%235fc9ad' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='15.5' cy='14' r='1.5' fill='%2355384e'/%3E%3Ccircle cx='17' cy='8' r='1.6' fill='%23ff8fb4'/%3E%3C/svg%3E">
   <style>
+
     :root {
-      color-scheme: dark;
-      --bg: #060a14;
-      --panel: #0a1222;
-      --panel-soft: #0d172a;
-      --ink: #ecfff7;
-      --muted: #7f9a9a;
-      --mint: #5cffb0;
-      --cyan: #56d8ff;
-      --coral: #ff5d7a;
-      --line: rgba(141, 255, 209, 0.14);
-      --line-strong: rgba(141, 255, 209, 0.28);
-      --font-ui: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color-scheme: light;
+      --bg: #fff7f4;
+      --panel: #fffdfc;
+      --panel-soft: #fff3f8;
+      --ink: #55384e;
+      --muted: #856377;
+      --pink: #ff8fb4;
+      --pink-deep: #e85f8f;
+      --pink-soft: #ffd9e6;
+      --lavender: #b79bff;
+      --lavender-deep: #8f6bd6;
+      --lavender-soft: #ece5ff;
+      --mint: #5fc9ad;
+      --mint-deep: #2f9d82;
+      --mint-soft: #dcf7ee;
+      --butter: #ffcf7a;
+      --coral: #ff7d8f;
+      --sky: #8cc6ff;
+      --line: rgba(199, 132, 165, 0.22);
+      --line-strong: rgba(199, 112, 152, 0.4);
+      --shadow-rose: rgba(214, 131, 166, 0.22);
+      --font-ui: "Nunito", "Quicksand", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+      --font-round: "Trebuchet MS", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
       --font-mono: "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
 
@@ -40,15 +52,22 @@
       overflow-x: hidden;
       color: var(--ink);
       background:
-        radial-gradient(1200px 700px at 50% -10%, rgba(26, 75, 69, 0.28), transparent 70%),
-        radial-gradient(900px 600px at 105% 45%, rgba(20, 55, 89, 0.22), transparent 68%),
+        radial-gradient(920px 640px at 6% -8%, #ffe0ed 0%, rgba(255, 224, 237, 0) 58%),
+        radial-gradient(840px 660px at 102% 6%, #ebe4ff 0%, rgba(235, 228, 255, 0) 60%),
+        radial-gradient(920px 720px at 50% 112%, #ddf7ee 0%, rgba(221, 247, 238, 0) 62%),
         var(--bg);
       font-family: var(--font-ui);
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     button {
       font: inherit;
+    }
+
+    ::selection {
+      color: var(--ink);
+      background: #ffd0e0;
     }
 
     .backdrop {
@@ -62,50 +81,47 @@
     .backdrop::before {
       content: "";
       position: absolute;
-      inset: -20%;
-      background-image:
-        linear-gradient(rgba(124, 255, 203, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124, 255, 203, 0.035) 1px, transparent 1px);
-      background-size: 48px 48px;
-      transform: perspective(700px) rotateX(58deg) translateY(12%);
-      transform-origin: 50% 100%;
-      mask-image: linear-gradient(to bottom, transparent 12%, #000 48%, transparent 92%);
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 143, 180, 0.16) 1.6px, transparent 2px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 78%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 78%);
     }
 
     .backdrop::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 55%, rgba(2, 6, 14, 0.72));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.44), transparent 34%);
     }
 
     .orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(14px);
-      opacity: 0.55;
+      filter: blur(46px);
+      opacity: 0.72;
     }
 
     .orb--mint {
+      width: 42vw;
+      height: 42vw;
+      min-width: 300px;
+      min-height: 300px;
+      top: -16vw;
+      left: -12vw;
+      background: radial-gradient(circle, rgba(255, 156, 190, 0.48), transparent 68%);
+      animation: drift 20s ease-in-out infinite alternate;
+    }
+
+    .orb--blue {
       width: 38vw;
       height: 38vw;
       min-width: 280px;
       min-height: 280px;
-      top: -16vw;
-      left: -10vw;
-      background: radial-gradient(circle, rgba(54, 232, 161, 0.2), transparent 68%);
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-
-    .orb--blue {
-      width: 34vw;
-      height: 34vw;
-      min-width: 260px;
-      min-height: 260px;
       right: -12vw;
-      bottom: -10vw;
-      background: radial-gradient(circle, rgba(55, 154, 255, 0.15), transparent 70%);
-      animation: drift 22s ease-in-out -8s infinite alternate-reverse;
+      bottom: -12vw;
+      background: radial-gradient(circle, rgba(172, 148, 255, 0.36), transparent 70%);
+      animation: drift 24s ease-in-out -8s infinite alternate-reverse;
     }
 
     @keyframes drift {
@@ -130,92 +146,105 @@
       position: relative;
       display: grid;
       flex: 0 0 auto;
-      width: 58px;
-      height: 58px;
+      width: 62px;
+      height: 62px;
       place-items: center;
-      border: 1px solid var(--line-strong);
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 30% 20%, rgba(92, 255, 176, 0.18), transparent 58%),
-        rgba(8, 18, 31, 0.8);
+      border: 3px solid #fff;
+      border-radius: 21px;
+      background: linear-gradient(150deg, #ffe0eb, #ffeedb 55%, #eee6ff);
       box-shadow:
-        inset 0 0 22px rgba(92, 255, 176, 0.08),
-        0 0 36px rgba(42, 210, 149, 0.12);
+        0 14px 26px -14px rgba(214, 131, 166, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      transform: rotate(-3deg);
     }
 
     .logo::after {
       content: "";
       position: absolute;
-      inset: 7px;
-      border: 1px solid rgba(141, 255, 209, 0.12);
-      border-radius: 12px;
+      top: -6px;
+      right: -6px;
+      width: 13px;
+      height: 13px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--butter);
+      box-shadow: 0 4px 9px -3px rgba(214, 131, 166, 0.5);
     }
 
     .logo svg {
-      width: 36px;
-      height: 36px;
-      filter: drop-shadow(0 0 6px rgba(92, 255, 176, 0.55));
+      width: 38px;
+      height: 38px;
     }
 
     .kicker {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin: 0 0 5px;
-      color: var(--mint);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      margin: 0 0 6px;
+      color: #b8384f;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
     }
 
     .kicker__dot {
-      width: 5px;
-      height: 5px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--mint);
-      box-shadow: 0 0 10px var(--mint);
+      background: var(--pink);
+      box-shadow: 0 0 10px rgba(255, 143, 180, 0.7);
       animation: blink 2.4s ease-in-out infinite;
     }
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.35; }
+      50% { opacity: 0.4; }
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(28px, 6vw, 42px);
-      font-weight: 850;
-      letter-spacing: -0.04em;
-      line-height: 1.08;
+      background: linear-gradient(115deg, #e85f8f 8%, #b06fe0 58%, #7a86e8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: clamp(30px, 6vw, 44px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
     }
 
     .subtitle {
-      margin: 6px 0 0;
+      margin: 7px 0 0;
       color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.04em;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
     .cabinet {
       position: relative;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
+      padding: 14px;
+      border: 2px solid transparent;
+      border-radius: 30px;
       background:
-        linear-gradient(155deg, rgba(20, 39, 56, 0.78), rgba(7, 13, 25, 0.94) 52%, rgba(9, 19, 31, 0.96));
+        linear-gradient(var(--panel), var(--panel)) padding-box,
+        linear-gradient(135deg, #ffd3e2 0%, #eae0ff 50%, #d8f6ec 100%) border-box;
       box-shadow:
-        0 40px 90px -46px rgba(0, 0, 0, 0.95),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        0 34px 70px -34px rgba(196, 107, 145, 0.42),
+        inset 0 2px 0 rgba(255, 255, 255, 0.9);
+      animation: card-rise 460ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+    }
+
+    @keyframes card-rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hud {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 5px 7px 14px;
+      gap: 12px;
+      padding: 4px 6px 16px;
     }
 
     .stats {
@@ -227,47 +256,61 @@
 
     .stat {
       min-width: 0;
-      padding-left: 11px;
-      border-left: 1px solid var(--line);
+      padding: 9px 12px 10px;
+      border-radius: 17px;
+      background: linear-gradient(160deg, #fff1f7, #fffafc);
     }
 
-    .stat:first-child {
-      padding-left: 0;
-      border-left: 0;
+    .stat:nth-child(2) {
+      background: linear-gradient(160deg, #f1ecff, #fbf9ff);
+    }
+
+    .stat:nth-child(3) {
+      background: linear-gradient(160deg, #e8fbf3, #f8fffc);
     }
 
     .stat span {
       display: block;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
     }
 
     .stat strong {
       display: block;
       overflow: hidden;
       color: var(--ink);
-      font-family: var(--font-mono);
-      font-size: clamp(20px, 4vw, 27px);
+      font-family: var(--font-round);
+      font-size: clamp(23px, 4vw, 30px);
       font-variant-numeric: tabular-nums;
-      font-weight: 700;
+      font-weight: 800;
       line-height: 1;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
+    #score {
+      color: var(--pink-deep);
+    }
+
+    #best {
+      color: var(--lavender-deep);
+    }
+
+    #speed {
+      color: var(--mint-deep);
+    }
+
     #score.is-bumped {
-      animation: score-pop 320ms cubic-bezier(0.2, 1.4, 0.4, 1);
+      animation: score-pop 340ms cubic-bezier(0.2, 1.4, 0.4, 1);
     }
 
     @keyframes score-pop {
-      0% { color: var(--ink); transform: translateY(0); }
-      35% { color: var(--mint); transform: translateY(-3px) scale(1.08); }
-      100% { color: var(--ink); transform: translateY(0) scale(1); }
+      0% { color: var(--pink-deep); transform: translateY(0); }
+      35% { color: var(--pink); transform: translateY(-4px) scale(1.1); }
+      100% { color: var(--pink-deep); transform: translateY(0) scale(1); }
     }
 
     .hud__tools {
@@ -278,38 +321,38 @@
 
     .icon-btn {
       display: grid;
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
       padding: 0;
       place-items: center;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: rgba(8, 17, 30, 0.72);
+      color: var(--pink-deep);
+      border: 2px solid #ffe0ea;
+      border-radius: 16px;
+      background: #fffdfd;
       cursor: pointer;
       transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
 
     .icon-btn:hover {
-      color: var(--mint);
-      border-color: var(--line-strong);
-      background: rgba(18, 39, 48, 0.8);
+      color: var(--pink-deep);
+      border-color: #ffc4d8;
+      background: #fff3f8;
     }
 
     .icon-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
     }
 
     .icon-btn:focus-visible,
     .btn:focus-visible,
     .pad__btn:focus-visible {
-      outline: 2px solid var(--mint);
+      outline: 3px solid var(--lavender-deep);
       outline-offset: 3px;
     }
 
     .icon-btn svg {
-      width: 19px;
-      height: 19px;
+      width: 21px;
+      height: 21px;
     }
 
     .icon-btn[data-enabled="false"] .icon-on,
@@ -320,12 +363,12 @@
     .board {
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(109, 255, 198, 0.2);
-      border-radius: 19px;
-      background: #07101d;
+      border: 3px solid #fff;
+      border-radius: 24px;
+      background: #fff6fa;
       box-shadow:
-        inset 0 0 60px rgba(0, 0, 0, 0.72),
-        0 24px 70px -38px rgba(61, 255, 173, 0.38);
+        inset 0 0 0 1px rgba(255, 197, 218, 0.55),
+        0 18px 40px -26px rgba(214, 131, 166, 0.55);
       isolation: isolate;
     }
 
@@ -336,8 +379,8 @@
       z-index: 2;
       border-radius: inherit;
       box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.035),
-        inset 0 0 46px rgba(0, 0, 0, 0.48);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.85),
+        inset 0 0 36px rgba(255, 178, 204, 0.14);
       pointer-events: none;
     }
 
@@ -351,18 +394,7 @@
     }
 
     .scanlines {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.018) 0,
-        rgba(255, 255, 255, 0.018) 1px,
-        transparent 1px,
-        transparent 4px
-      );
-      mix-blend-mode: screen;
-      pointer-events: none;
+      display: none;
     }
 
     .overlay {
@@ -370,15 +402,14 @@
       inset: 0;
       z-index: 3;
       display: grid;
-      padding: 22px;
+      padding: 24px;
       place-items: center;
-      background:
-        radial-gradient(circle at 50% 44%, rgba(10, 27, 34, 0.58), rgba(3, 8, 16, 0.88) 78%);
+      background: rgba(255, 244, 249, 0.7);
       opacity: 0;
       visibility: hidden;
       transition: opacity 220ms ease, visibility 220ms ease;
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(5px) saturate(1.04);
+      -webkit-backdrop-filter: blur(5px) saturate(1.04);
     }
 
     .overlay.is-visible {
@@ -386,49 +417,69 @@
       visibility: visible;
     }
 
+    .overlay.is-visible .overlay__card {
+      animation: card-pop 320ms cubic-bezier(0.2, 1.15, 0.4, 1) both;
+    }
+
+    @keyframes card-pop {
+      from { opacity: 0; transform: translateY(8px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .overlay__card {
-      width: min(100%, 390px);
-      padding: 22px 20px 18px;
+      width: min(100%, 400px);
+      padding: 24px 22px 20px;
       text-align: center;
-      border: 1px solid rgba(141, 255, 209, 0.16);
-      border-radius: 20px;
-      background: linear-gradient(160deg, rgba(14, 31, 42, 0.82), rgba(5, 12, 23, 0.9));
+      border: 2px solid #ffe0ea;
+      border-radius: 28px;
+      background: rgba(255, 253, 252, 0.98);
       box-shadow:
-        0 24px 70px rgba(0, 0, 0, 0.46),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 26px 60px -26px rgba(196, 107, 145, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
     }
 
     .overlay__tag {
-      margin: 0 0 9px;
-      color: var(--mint);
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
+      display: inline-block;
+      margin: 0 0 10px;
+      padding: 4px 12px;
+      color: #b8384f;
+      border-radius: 999px;
+      background: #ffe6ef;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
     }
 
     .overlay[data-state="over"] .overlay__tag {
-      color: var(--coral);
+      color: #b8384f;
+      background: #ffe4e8;
     }
 
     .overlay[data-state="paused"] .overlay__tag {
-      color: var(--cyan);
+      color: #5f3daf;
+      background: #efe8ff;
+    }
+
+    .overlay[data-state="won"] .overlay__tag {
+      color: #1f7a63;
+      background: #daf7ed;
     }
 
     .overlay h2 {
       margin: 0;
-      font-size: clamp(23px, 4vw, 30px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      color: var(--ink);
+      font-size: clamp(24px, 4vw, 30px);
+      font-weight: 900;
+      letter-spacing: -0.01em;
     }
 
     .overlay__text {
-      max-width: 300px;
-      margin: 9px auto 0;
-      color: #a5bdb8;
-      font-size: 12px;
-      line-height: 1.75;
+      max-width: 310px;
+      margin: 10px auto 0;
+      color: #7f6078;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.9;
     }
 
     .overlay__score {
@@ -438,8 +489,9 @@
       gap: 9px;
       margin: 14px 0 0;
       color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 0.08em;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
     }
 
     .overlay__score[hidden] {
@@ -447,12 +499,12 @@
     }
 
     .overlay__score strong {
-      color: var(--mint);
-      font-family: var(--font-mono);
-      font-size: 30px;
+      color: var(--pink-deep);
+      font-family: var(--font-round);
+      font-size: 34px;
       font-variant-numeric: tabular-nums;
       line-height: 1;
-      text-shadow: 0 0 22px rgba(92, 255, 176, 0.38);
+      text-shadow: 0 6px 18px rgba(232, 95, 143, 0.22);
     }
 
     .overlay .btn {
@@ -462,18 +514,17 @@
 
     .overlay__hint {
       margin: 12px 0 0;
-      color: #698486;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.03em;
-      line-height: 1.6;
+      color: #856377;
+      font-size: 10px;
+      letter-spacing: 0.02em;
+      line-height: 1.7;
     }
 
     .actions {
       display: flex;
       align-items: center;
-      gap: 9px;
-      padding: 12px 3px 2px;
+      gap: 10px;
+      padding: 14px 4px 2px;
     }
 
     .btn {
@@ -481,35 +532,38 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      min-height: 48px;
-      padding: 0 20px;
-      border: 1px solid transparent;
-      border-radius: 14px;
+      min-height: 54px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 999px;
       cursor: pointer;
-      font-weight: 750;
-      letter-spacing: 0.01em;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
       transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease, border-color 150ms ease, color 150ms ease;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .btn:active {
-      transform: translateY(1px) scale(0.99);
+      transform: translateY(1px) scale(0.985);
     }
 
     .btn--primary {
       flex: 1;
-      color: #03130d;
-      border-color: rgba(255, 255, 255, 0.14);
-      background: linear-gradient(135deg, #7dffc1, #4be3b0 52%, #3bc9ff);
+      color: #592239;
+      border: 2px solid rgba(255, 255, 255, 0.72);
+      background: linear-gradient(140deg, #ffc0d4 0%, #ff9dbd 46%, #ffb6cf 100%);
       box-shadow:
-        0 12px 30px -12px rgba(92, 255, 176, 0.68),
-        inset 0 1px 0 rgba(255, 255, 255, 0.44);
+        0 14px 28px -12px rgba(232, 95, 143, 0.6),
+        inset 0 2px 0 rgba(255, 255, 255, 0.62);
     }
 
     .btn--primary:hover {
+      background: linear-gradient(140deg, #ffcadd 0%, #ffa9c5 46%, #ffc0d6 100%);
       box-shadow:
-        0 18px 36px -12px rgba(92, 255, 176, 0.82),
-        inset 0 1px 0 rgba(255, 255, 255, 0.52);
-      transform: translateY(-1px);
+        0 18px 32px -12px rgba(232, 95, 143, 0.72),
+        inset 0 2px 0 rgba(255, 255, 255, 0.7);
+      transform: translateY(-2px);
     }
 
     .btn__icon {
@@ -519,36 +573,36 @@
 
     .btn--ghost {
       flex: 0 0 auto;
-      min-width: 94px;
-      padding: 0 16px;
-      color: #b3c8c2;
-      border-color: var(--line);
-      background: rgba(9, 19, 32, 0.7);
+      min-width: 108px;
+      padding: 0 18px;
+      color: #9a6580;
+      border: 2px solid #ffdbe7;
+      background: #fffdfd;
     }
 
     .btn--ghost:hover {
-      color: var(--ink);
-      border-color: var(--line-strong);
-      background: rgba(19, 39, 51, 0.76);
+      color: var(--pink-deep);
+      border-color: #ffc4d8;
+      background: #fff4f8;
     }
 
     .btn--ghost svg {
-      width: 16px;
-      height: 16px;
-      opacity: 0.8;
+      width: 17px;
+      height: 17px;
+      opacity: 0.9;
     }
 
     .pad {
       display: none;
-      width: 170px;
-      margin: 14px auto 0;
+      width: 196px;
+      margin: 16px auto 0;
       grid-template-areas:
         ". up ."
         "left core right"
         ". down .";
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
-      gap: 7px;
+      gap: 9px;
     }
 
     .pad__btn {
@@ -557,10 +611,11 @@
       aspect-ratio: 1;
       padding: 0;
       place-items: center;
-      color: #b9d6cc;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: linear-gradient(160deg, rgba(20, 42, 52, 0.88), rgba(8, 18, 31, 0.92));
+      color: var(--pink-deep);
+      border: 2px solid #ffdce8;
+      border-radius: 20px;
+      background: linear-gradient(160deg, #fffdfd, #fff2f7);
+      box-shadow: 0 8px 16px -12px rgba(214, 131, 166, 0.6);
       cursor: pointer;
       touch-action: manipulation;
       transition: color 120ms ease, border-color 120ms ease, background 120ms ease, transform 120ms ease;
@@ -568,19 +623,21 @@
     }
 
     .pad__btn:hover {
-      color: var(--mint);
-      border-color: var(--line-strong);
+      color: var(--pink-deep);
+      border-color: #ffc0d6;
+      background: #fff4f8;
     }
 
     .pad__btn:active {
-      color: var(--mint);
-      background: rgba(43, 92, 81, 0.6);
-      transform: scale(0.94);
+      color: var(--pink-deep);
+      border-color: #ffb3ca;
+      background: #ffe3ed;
+      transform: scale(0.93);
     }
 
     .pad__btn svg {
-      width: 19px;
-      height: 19px;
+      width: 23px;
+      height: 23px;
     }
 
     .pad__btn--up { grid-area: up; }
@@ -596,34 +653,36 @@
 
     .pad__core::before {
       content: "";
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: rgba(141, 255, 209, 0.28);
-      box-shadow: 0 0 12px rgba(141, 255, 209, 0.32);
+      background: rgba(255, 143, 180, 0.45);
+      box-shadow: 0 0 0 5px rgba(255, 214, 229, 0.42);
     }
 
     .hint {
-      margin: 8px 0 0;
-      color: #647f7d;
-      font-family: var(--font-mono);
-      font-size: 10px;
+      margin: 10px 0 0;
+      color: #856377;
+      font-size: 11px;
+      font-weight: 600;
       letter-spacing: 0.02em;
+      line-height: 1.8;
       text-align: center;
     }
 
     .hint kbd {
       display: inline-block;
-      min-width: 18px;
-      padding: 1px 5px;
-      color: #9eb8b2;
-      border: 1px solid rgba(141, 255, 209, 0.14);
-      border-bottom-color: rgba(141, 255, 209, 0.26);
-      border-radius: 4px;
-      background: rgba(13, 27, 39, 0.9);
-      font-family: var(--font-mono);
-      font-size: 9px;
-      line-height: 1.5;
+      min-width: 20px;
+      padding: 1px 6px;
+      color: #9a6580;
+      border: 1.5px solid #ffdbe7;
+      border-bottom-width: 2.5px;
+      border-radius: 7px;
+      background: #fffdfd;
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.6;
     }
 
     .hint__touch {
@@ -635,12 +694,11 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 18px 4px 0;
-      color: #4f6868;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      padding: 18px 6px 0;
+      color: #856377;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
     .sr-only {
@@ -680,9 +738,9 @@
       }
     }
 
-    @media (min-width: 561px) and (max-height: 1060px) {
+    @media (min-width: 561px) and (max-height: 1120px) {
       .page {
-        width: min(100% - 32px, 720px, calc(100dvh - 242px));
+        width: min(100% - 32px, 720px, calc(100dvh - 276px));
         padding-top: 20px;
         padding-bottom: 12px;
       }
@@ -692,63 +750,69 @@
       }
 
       .logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 15px;
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
       }
 
       .logo svg {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
       }
 
       h1 {
-        font-size: clamp(26px, 3.2vw, 36px);
+        font-size: clamp(27px, 3.4vw, 37px);
       }
 
       .subtitle {
         margin-top: 3px;
-        font-size: 10px;
+        font-size: 11px;
       }
 
       .cabinet {
-        padding: 9px;
-        border-radius: 23px;
+        padding: 11px;
+        border-radius: 25px;
       }
 
       .hud {
-        padding: 2px 5px 10px;
+        padding: 2px 5px 11px;
+      }
+
+      .stat {
+        padding: 6px 9px 8px;
+        border-radius: 14px;
       }
 
       .stat span {
-        font-size: 8px;
+        margin-bottom: 2px;
+        font-size: 9px;
       }
 
       .stat strong {
-        font-size: 21px;
+        font-size: 22px;
       }
 
       .icon-btn {
-        width: 38px;
-        height: 38px;
-        border-radius: 11px;
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
       }
 
       .board {
-        border-radius: 16px;
+        border-radius: 19px;
       }
 
       .actions {
-        padding-top: 9px;
+        padding-top: 10px;
       }
 
       .btn {
-        min-height: 44px;
+        min-height: 48px;
       }
 
       .hint {
-        margin-top: 6px;
-        font-size: 9px;
+        margin-top: 7px;
+        font-size: 10px;
       }
 
       footer {
@@ -756,7 +820,13 @@
       }
 
       .overlay__card {
-        padding: 16px 16px 14px;
+        padding: 18px 16px 15px;
+      }
+    }
+
+    @media (min-width: 561px) and (min-height: 900px) and (max-height: 1120px) {
+      footer {
+        display: flex;
       }
     }
 
@@ -772,39 +842,42 @@
       }
 
       .logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 15px;
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
       }
 
       .logo svg {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
       }
 
       .kicker {
-        font-size: 9px;
-      }
-
-      .subtitle {
         font-size: 10px;
       }
 
+      .subtitle {
+        font-size: 11px;
+      }
+
       .cabinet {
-        padding: 9px;
-        border-radius: 23px;
+        padding: 10px;
+        border-radius: 24px;
       }
 
       .hud {
-        padding: 4px 5px 11px;
+        padding: 3px 4px 11px;
+        gap: 9px;
       }
 
       .stat {
-        padding-left: 8px;
+        padding: 6px 8px 7px;
+        border-radius: 13px;
       }
 
       .stat span {
-        font-size: 8px;
+        font-size: 9px;
+        letter-spacing: 0.04em;
       }
 
       .stat strong {
@@ -812,13 +885,13 @@
       }
 
       .icon-btn {
-        width: 38px;
-        height: 38px;
-        border-radius: 11px;
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
       }
 
       .board {
-        border-radius: 15px;
+        border-radius: 18px;
       }
 
       .overlay {
@@ -826,46 +899,49 @@
       }
 
       .overlay__card {
-        padding: 18px 14px 14px;
-        border-radius: 16px;
+        padding: 18px 14px 15px;
+        border-radius: 22px;
       }
 
       .overlay__text {
-        font-size: 11px;
+        font-size: 12px;
+        line-height: 1.8;
       }
 
       .overlay__hint {
-        font-size: 8px;
+        font-size: 9px;
       }
 
       .actions {
-        gap: 7px;
-        padding-top: 10px;
+        gap: 8px;
+        padding-top: 11px;
       }
 
       .btn {
-        min-height: 46px;
-        border-radius: 12px;
-        font-size: 14px;
+        min-height: 50px;
+        border-radius: 999px;
+        font-size: 15px;
       }
 
       .btn--ghost {
-        min-width: 82px;
-        padding: 0 12px;
+        min-width: 92px;
+        padding: 0 14px;
+      }
+
+      .pad {
+        width: 186px;
+        margin-top: 14px;
       }
 
       .hint {
-        font-size: 9px;
+        font-size: 10px;
         line-height: 1.8;
       }
 
       footer {
-        padding-top: 14px;
-        font-size: 8px;
-      }
-
-      footer span:last-child {
         display: none;
+        padding-top: 14px;
+        font-size: 9px;
       }
     }
 
@@ -891,15 +967,16 @@
     <header class="hero">
       <div class="logo" aria-hidden="true">
         <svg viewBox="0 0 64 64" fill="none">
-          <path d="M21 43H36C42.6 43 48 37.6 48 31V29C48 22.4 42.6 17 36 17H28C25.2 17 23 19.2 23 22V24C23 26.8 25.2 29 28 29H34" stroke="#5CFFB0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="45" cy="29" r="3.5" fill="#DFFFF0"/>
-          <circle cx="45.8" cy="28.3" r="1.3" fill="#07101D"/>
+          <path d="M21 43H36C42.6 43 48 37.6 48 31V29C48 22.4 42.6 17 36 17H28C25.2 17 23 19.2 23 22V24C23 26.8 25.2 29 28 29H34" stroke="#5FC9AD" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="33" cy="28.2" r="2.5" fill="#4A2F47"/>
+          <circle cx="33.8" cy="27.4" r="0.9" fill="#FFFFFF"/>
+          <ellipse cx="29.8" cy="31.8" rx="2.8" ry="1.9" fill="#FFA9C4"/>
         </svg>
       </div>
       <div>
-        <p class="kicker"><span class="kicker__dot"></span> Arcade 001</p>
-        <h1>霓虹贪吃蛇</h1>
-        <p class="subtitle">NEON SNAKE · 吃下光点，让尾巴追上你的野心。</p>
+        <p class="kicker"><span class="kicker__dot"></span> 甜甜小游戏</p>
+        <h1>糖果贪吃蛇</h1>
+        <p class="subtitle">吃掉小草莓，尾巴会慢慢变长哦～</p>
       </div>
     </header>
 
@@ -935,13 +1012,13 @@
       </div>
 
       <div class="board" id="board">
-        <canvas id="game" role="img" aria-label="24 乘 24 的贪吃蛇棋盘"></canvas>
+        <canvas id="game" role="img" aria-label="24 乘 24 的糖果贪吃蛇棋盘"></canvas>
         <div class="scanlines" aria-hidden="true"></div>
         <div class="overlay is-visible" id="overlay" data-state="start" aria-hidden="false">
           <div class="overlay__card">
-            <p class="overlay__tag" id="overlayTag">Ready player one</p>
+            <p class="overlay__tag" id="overlayTag">欢迎来玩</p>
             <h2 id="overlayTitle">准备好了吗？</h2>
-            <p class="overlay__text" id="overlayText">吃下光点，让身体变长。别撞墙，也别咬到自己。</p>
+            <p class="overlay__text" id="overlayText">帮小蛇吃掉草莓，身体就会变长。小心别撞到墙，也别咬到自己的尾巴。</p>
             <p class="overlay__score" id="overlayScore" hidden>
               <span>本局得分</span>
               <strong id="finalScore">0</strong>
@@ -992,8 +1069,8 @@
     </section>
 
     <footer>
-      <span>Small game · good break</span>
-      <span>Best score saved locally</span>
+      <span>小游戏 · 开心一下</span>
+      <span>最高分会保存在本机</span>
     </footer>
   </main>
 
@@ -1173,6 +1250,7 @@
       };
 
       let lastTime = performance.now();
+      let boardCache = null;
       let lastBumpTimer = 0;
       let swipeStart = null;
 
@@ -1385,34 +1463,34 @@
       function showOverlay(kind) {
         const copy = {
           start: {
-            tag: "Ready player one",
+            tag: "欢迎来玩",
             title: "准备好了吗？",
-            text: "吃下光点，让身体变长。别撞墙，也别咬到自己。",
+            text: "帮小蛇吃掉草莓，身体就会变长。小心别撞到墙，也别咬到自己的尾巴。",
             button: "开始游戏",
             hint: touchLayout
               ? "点击开始 · 滑动棋盘或使用方向键"
               : "Enter 开始 · 方向键 / WASD 移动 · 空格 暂停"
           },
           paused: {
-            tag: "Paused",
-            title: "已暂停",
-            text: "蛇不会偷跑。按空格或点击继续，随时回到霓虹里。",
+            tag: "休息一下",
+            title: "小蛇在打盹",
+            text: "点一下“继续游戏”，我们就接着出发。",
             button: "继续游戏",
             hint: touchLayout ? "点击继续 · 休息一下" : "空格 / P 继续 · R 重新开始"
           },
           over: {
-            tag: "Game over",
-            title: "游戏结束",
+            tag: "游戏结束",
+            title: "哎呀，撞到啦",
             text: state.score > 0 && state.score > state.startedBest
-              ? "刷新纪录！尾巴还没追上你的野心。"
-              : "差一点就刷新纪录了，再试一次？",
+              ? "刷新纪录啦！你真棒，再来一次吧～"
+              : "差一点点就刷新纪录了，再试一次吧～",
             button: "再来一局",
             hint: touchLayout ? "点击再来一局 · 随时重新出发" : "Enter 再来一局 · R 重新开始"
           },
           won: {
-            tag: "Board cleared",
-            title: "完美通关！",
-            text: "棋盘已经被你填满，这条蛇没有尽头。",
+            tag: "全部吃完",
+            title: "太厉害了！",
+            text: "整个棋盘都被你填满啦，小蛇吃得饱饱的。",
             button: "再来一局",
             hint: touchLayout ? "点击再来一局 · 随时重新出发" : "Enter 再来一局 · R 重新开始"
           }
@@ -1451,38 +1529,53 @@
         state.size = size;
         state.cell = size / COLS;
         state.dpr = dpr;
+        boardCache = null;
+      }
+
+      function buildBoardCache() {
+        const size = state.size;
+        if (!size) return;
+        const dpr = state.dpr;
+        const cache = document.createElement("canvas");
+        cache.width = Math.round(size * dpr);
+        cache.height = Math.round(size * dpr);
+        const g = cache.getContext("2d");
+        if (!g) return;
+        g.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        g.fillStyle = "#fff7fb";
+        g.fillRect(0, 0, size, size);
+
+        const glow = g.createRadialGradient(
+          size * 0.5, size * 0.4, 0,
+          size * 0.5, size * 0.5, size * 0.8
+        );
+        glow.addColorStop(0, "rgba(255, 214, 232, 0.8)");
+        glow.addColorStop(0.5, "rgba(238, 228, 255, 0.34)");
+        glow.addColorStop(1, "rgba(255, 247, 251, 0)");
+        g.fillStyle = glow;
+        g.fillRect(0, 0, size, size);
+
+        const cell = state.cell;
+        const inset = Math.max(0.6, cell * 0.05);
+        const tile = cell - inset * 2;
+        const radius = Math.min(cell * 0.3, tile * 0.36);
+        for (let y = 0; y < ROWS; y += 1) {
+          for (let x = 0; x < COLS; x += 1) {
+            g.fillStyle = (x + y) % 2 === 0 ? "#fff0f7" : "#fffafd";
+            g.beginPath();
+            g.roundRect(x * cell + inset, y * cell + inset, tile, tile, radius);
+            g.fill();
+          }
+        }
+
+        boardCache = cache;
       }
 
       function drawBackground() {
         const size = state.size;
-        const cell = state.cell;
-        ctx.fillStyle = "#07101d";
-        ctx.fillRect(0, 0, size, size);
-
-        const glow = ctx.createRadialGradient(
-          size * 0.5, size * 0.42, 0,
-          size * 0.5, size * 0.5, size * 0.78
-        );
-        glow.addColorStop(0, "rgba(20, 64, 62, 0.34)");
-        glow.addColorStop(0.52, "rgba(9, 31, 42, 0.16)");
-        glow.addColorStop(1, "rgba(3, 8, 16, 0)");
-        ctx.fillStyle = glow;
-        ctx.fillRect(0, 0, size, size);
-
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "rgba(126, 255, 204, 0.055)";
-        ctx.beginPath();
-        for (let i = 1; i < COLS; i += 1) {
-          const position = Math.round(i * cell) + 0.5;
-          ctx.moveTo(position, 0);
-          ctx.lineTo(position, size);
-        }
-        for (let i = 1; i < ROWS; i += 1) {
-          const position = Math.round(i * cell) + 0.5;
-          ctx.moveTo(0, position);
-          ctx.lineTo(size, position);
-        }
-        ctx.stroke();
+        if (!boardCache) buildBoardCache();
+        if (boardCache) ctx.drawImage(boardCache, 0, 0, size, size);
       }
 
       function renderPoints(progress) {
@@ -1512,134 +1605,214 @@
         ctx.save();
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
-        ctx.shadowColor = "rgba(75, 255, 176, 0.48)";
+        ctx.shadowColor = "rgba(64, 180, 150, 0.38)";
         ctx.shadowBlur = cell * 0.9;
-        ctx.strokeStyle = "rgba(59, 244, 164, 0.16)";
-        ctx.lineWidth = cell * 0.94;
+        ctx.strokeStyle = "rgba(64, 180, 150, 0.2)";
+        ctx.lineWidth = cell * 0.98;
         ctx.stroke(path);
         ctx.restore();
 
         const head = points[0];
         const tail = points[points.length - 1];
         const gradient = ctx.createLinearGradient(head.x, head.y, tail.x, tail.y);
-        gradient.addColorStop(0, "#b7ffd8");
-        gradient.addColorStop(0.35, "#55f7ae");
-        gradient.addColorStop(1, "#0b8d86");
+        gradient.addColorStop(0, "#c9f8e9");
+        gradient.addColorStop(0.34, "#6fe0bd");
+        gradient.addColorStop(1, "#2f9d82");
         ctx.save();
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = cell * 0.68;
+        ctx.lineWidth = cell * 0.74;
         ctx.stroke(path);
-        ctx.strokeStyle = "rgba(230, 255, 244, 0.26)";
-        ctx.lineWidth = cell * 0.16;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.lineWidth = cell * 0.15;
         ctx.stroke(path);
         ctx.restore();
 
-        const headGlow = ctx.createRadialGradient(
-          head.x - cell * 0.1,
-          head.y - cell * 0.14,
-          cell * 0.04,
-          head.x,
-          head.y,
-          cell * 0.48
-        );
-        headGlow.addColorStop(0, "#f1fff7");
-        headGlow.addColorStop(0.3, "#8dffc6");
-        headGlow.addColorStop(1, "#26c994");
         ctx.save();
-        ctx.shadowColor = "rgba(119, 255, 191, 0.8)";
-        ctx.shadowBlur = cell * 0.72;
-        ctx.fillStyle = headGlow;
-        ctx.beginPath();
-        ctx.arc(head.x, head.y, cell * 0.4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        const direction = state.direction;
-        const perpendicular = { x: -direction.y, y: direction.x };
-        const eyeForward = cell * 0.11;
-        const eyeSide = cell * 0.16;
-        for (const side of [-1, 1]) {
-          const eyeX = head.x + direction.x * eyeForward + perpendicular.x * eyeSide * side;
-          const eyeY = head.y + direction.y * eyeForward + perpendicular.y * eyeSide * side;
-          ctx.fillStyle = "#06111f";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+        for (let i = 3; i < points.length - 1; i += 3) {
           ctx.beginPath();
-          ctx.arc(eyeX, eyeY, cell * 0.088, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "rgba(255, 255, 255, 0.86)";
-          ctx.beginPath();
-          ctx.arc(eyeX - cell * 0.015, eyeY - cell * 0.018, cell * 0.026, 0, Math.PI * 2);
+          ctx.arc(points[i].x, points[i].y, Math.max(1, cell * 0.075), 0, Math.PI * 2);
           ctx.fill();
         }
+        ctx.restore();
+
+        const angle = Math.atan2(state.direction.y, state.direction.x);
+        ctx.save();
+        ctx.translate(head.x, head.y);
+        ctx.rotate(angle);
+
+        const headGradient = ctx.createRadialGradient(
+          -cell * 0.1, -cell * 0.14, cell * 0.03,
+          0, 0, cell * 0.48
+        );
+        headGradient.addColorStop(0, "#f4fffb");
+        headGradient.addColorStop(0.36, "#9bf0d6");
+        headGradient.addColorStop(1, "#45bc9b");
+        ctx.fillStyle = headGradient;
+        ctx.beginPath();
+        ctx.arc(0, 0, cell * 0.42, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(47, 157, 130, 0.3)";
+        ctx.lineWidth = Math.max(1, cell * 0.035);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(255, 143, 180, 0.6)";
+        for (const side of [-1, 1]) {
+          ctx.beginPath();
+          ctx.ellipse(-cell * 0.02, side * cell * 0.26, cell * 0.09, cell * 0.058, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        for (const side of [-1, 1]) {
+          const eyeX = cell * 0.09;
+          const eyeY = side * cell * 0.155;
+          ctx.fillStyle = "#fffdfd";
+          ctx.beginPath();
+          ctx.arc(eyeX, eyeY, cell * 0.1, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#4a2f47";
+          ctx.beginPath();
+          ctx.arc(eyeX + cell * 0.022, eyeY, cell * 0.055, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+          ctx.beginPath();
+          ctx.arc(eyeX + cell * 0.004, eyeY - cell * 0.024, Math.max(0.8, cell * 0.019), 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = "rgba(74, 47, 71, 0.75)";
+        ctx.lineWidth = Math.max(1, cell * 0.03);
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.arc(cell * 0.14, cell * 0.02, cell * 0.115, Math.PI * 0.18, Math.PI * 0.82);
+        ctx.stroke();
+        ctx.restore();
       }
 
       function drawFood(now) {
         if (!state.food) return;
         const cell = state.cell;
+        const bob = reduceMotion ? 0 : Math.sin(now / 430) * cell * 0.035;
         const centerX = (state.food.x + 0.5) * cell;
-        const centerY = (state.food.y + 0.5) * cell;
-        const pulse = reduceMotion ? 0.5 : 0.5 + 0.5 * Math.sin(now / 280);
-        const radius = cell * (0.26 + pulse * 0.024);
+        const centerY = (state.food.y + 0.5) * cell + bob;
+        const pulse = reduceMotion ? 0.5 : 0.5 + 0.5 * Math.sin(now / 300);
+        const radius = cell * (0.31 + pulse * 0.018);
 
         const halo = ctx.createRadialGradient(
           centerX, centerY, 0,
-          centerX, centerY, cell * 1.25
+          centerX, centerY, cell * 1.2
         );
-        halo.addColorStop(0, "rgba(255, 96, 130, 0.34)");
-        halo.addColorStop(0.45, "rgba(255, 74, 116, 0.1)");
-        halo.addColorStop(1, "rgba(255, 74, 116, 0)");
+        halo.addColorStop(0, `rgba(255, 120, 158, ${0.3 + pulse * 0.08})`);
+        halo.addColorStop(0.5, "rgba(255, 120, 158, 0.12)");
+        halo.addColorStop(1, "rgba(255, 120, 158, 0)");
         ctx.fillStyle = halo;
-        ctx.fillRect(centerX - cell * 1.25, centerY - cell * 1.25, cell * 2.5, cell * 2.5);
+        ctx.fillRect(centerX - cell * 1.2, centerY - cell * 1.2, cell * 2.4, cell * 2.4);
 
         ctx.save();
-        ctx.shadowColor = "rgba(255, 76, 116, 0.9)";
-        ctx.shadowBlur = cell * (0.72 + pulse * 0.38);
-        const foodGradient = ctx.createRadialGradient(
-          centerX - radius * 0.35,
-          centerY - radius * 0.45,
-          radius * 0.08,
-          centerX,
-          centerY,
-          radius * 1.12
-        );
-        foodGradient.addColorStop(0, "#fff3d8");
-        foodGradient.addColorStop(0.36, "#ffa0a9");
-        foodGradient.addColorStop(1, "#ff3c67");
-        ctx.fillStyle = foodGradient;
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        ctx.save();
-        ctx.strokeStyle = `rgba(255, 184, 193, ${0.24 + pulse * 0.18})`;
-        ctx.lineWidth = Math.max(1, cell * 0.045);
-        for (let i = 0; i < 2; i += 1) {
-          const start = now / 900 + i * Math.PI;
+        ctx.translate(centerX, centerY - radius * 0.62);
+        ctx.fillStyle = "#65c98f";
+        for (const angle of [-1.05, 0, 1.05]) {
+          ctx.save();
+          ctx.rotate(angle);
           ctx.beginPath();
-          ctx.arc(centerX, centerY, radius + cell * 0.17, start, start + Math.PI * 0.55);
-          ctx.stroke();
+          ctx.ellipse(0, -radius * 0.3, radius * 0.21, radius * 0.42, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
         }
         ctx.restore();
 
-        ctx.fillStyle = "rgba(255, 255, 255, 0.82)";
+        ctx.save();
+        ctx.shadowColor = "rgba(232, 74, 116, 0.55)";
+        ctx.shadowBlur = cell * (0.6 + pulse * 0.25);
+        const foodGradient = ctx.createRadialGradient(
+          centerX - radius * 0.35,
+          centerY - radius * 0.45,
+          radius * 0.1,
+          centerX,
+          centerY,
+          radius * 1.15
+        );
+        foodGradient.addColorStop(0, "#fff1cd");
+        foodGradient.addColorStop(0.3, "#ff8fa8");
+        foodGradient.addColorStop(1, "#e84a74");
+        ctx.fillStyle = foodGradient;
         ctx.beginPath();
-        ctx.arc(centerX - radius * 0.34, centerY - radius * 0.4, Math.max(1, cell * 0.035), 0, Math.PI * 2);
+        ctx.moveTo(centerX, centerY + radius * 1.08);
+        ctx.bezierCurveTo(centerX - radius * 1.22, centerY + radius * 0.05, centerX - radius, centerY - radius * 0.88, centerX, centerY - radius * 0.6);
+        ctx.bezierCurveTo(centerX + radius, centerY - radius * 0.88, centerX + radius * 1.22, centerY + radius * 0.05, centerX, centerY + radius * 1.08);
+        ctx.closePath();
         ctx.fill();
+        ctx.restore();
+
+        ctx.fillStyle = "rgba(255, 245, 214, 0.95)";
+        const seeds = [
+          [-0.34, -0.05, -0.5],
+          [0.02, -0.24, 0.2],
+          [0.38, -0.02, 0.5],
+          [-0.16, 0.3, -0.2],
+          [0.2, 0.34, 0.3]
+        ];
+        for (const seed of seeds) {
+          ctx.beginPath();
+          ctx.ellipse(
+            centerX + seed[0] * radius,
+            centerY + seed[1] * radius,
+            Math.max(0.6, radius * 0.055),
+            Math.max(0.9, radius * 0.085),
+            seed[2],
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+        }
+
+        ctx.fillStyle = "rgba(255, 255, 255, 0.62)";
+        ctx.beginPath();
+        ctx.ellipse(centerX - radius * 0.4, centerY - radius * 0.34, radius * 0.12, radius * 0.18, -0.6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.save();
+        ctx.strokeStyle = `rgba(255, 196, 214, ${0.22 + pulse * 0.16})`;
+        ctx.lineWidth = Math.max(1, cell * 0.035);
+        for (let i = 0; i < 2; i += 1) {
+          const start = now / 900 + i * Math.PI;
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius + cell * 0.2, start, start + Math.PI * 0.5);
+          ctx.stroke();
+        }
+        ctx.restore();
       }
 
       function drawBursts(now) {
         const cell = state.cell;
-        state.bursts = state.bursts.filter((burst) => now - burst.start < 420);
+        state.bursts = state.bursts.filter((burst) => now - burst.start < 520);
         for (const burst of state.bursts) {
-          const progress = clamp((now - burst.start) / 420, 0, 1);
-          const radius = cell * (0.34 + progress * 1.45);
-          ctx.strokeStyle = `rgba(255, 130, 155, ${(1 - progress) * 0.52})`;
-          ctx.lineWidth = Math.max(1, cell * 0.08 * (1 - progress));
+          const progress = clamp((now - burst.start) / 520, 0, 1);
+          const centerX = (burst.x + 0.5) * cell;
+          const centerY = (burst.y + 0.5) * cell;
+          const radius = cell * (0.32 + progress * 1.4);
+          ctx.strokeStyle = `rgba(255, 143, 180, ${(1 - progress) * 0.5})`;
+          ctx.lineWidth = Math.max(1, cell * 0.075 * (1 - progress));
           ctx.beginPath();
-          ctx.arc((burst.x + 0.5) * cell, (burst.y + 0.5) * cell, radius, 0, Math.PI * 2);
+          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
           ctx.stroke();
+
+          ctx.fillStyle = `rgba(255, 190, 212, ${(1 - progress) * 0.85})`;
+          for (let i = 0; i < 4; i += 1) {
+            const angle = i * (Math.PI / 2) + progress * 1.5;
+            const distance = cell * (0.4 + progress * 0.9);
+            ctx.beginPath();
+            ctx.arc(
+              centerX + Math.cos(angle) * distance,
+              centerY + Math.sin(angle) * distance,
+              Math.max(1, cell * 0.055 * (1 - progress)),
+              0,
+              Math.PI * 2
+            );
+            ctx.fill();
+          }
         }
       }
 
