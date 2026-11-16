@@ -148,9 +148,9 @@ export class FX {
   }
 
   /** The full corona eruption. */
-  eruption(scale = 1) {
+  eruption(scale = 1, { sparkCount = 250, waveOpacity = 1 } = {}) {
     const origin = new THREE.Vector3(0, 0, 0);
-    const count = 250;
+    const count = sparkCount;
     for (let i = 0; i < count; i += 1) {
       const dir = new THREE.Vector3(0, 0, 0);
       randomDirection(dir);
@@ -172,9 +172,9 @@ export class FX {
     }
 
     // Expanding rings: a crisp inner shockwave plus two soft halos.
-    this.wave(origin, { color: 0xfff0c0, maxScale: 8.4, duration: 1.7, opacity: 0.7, startScale: 2.4 });
-    this.wave(origin, { color: 0xffa04a, maxScale: 11.5, duration: 2.1, opacity: 0.38, startScale: 3.2 });
-    this.wave(origin, { color: 0xff7a9a, maxScale: 6.4, duration: 1.35, opacity: 0.3, startScale: 2 });
+    this.wave(origin, { color: 0xfff0c0, maxScale: 8.4, duration: 1.7, opacity: 0.7 * waveOpacity, startScale: 2.4 });
+    this.wave(origin, { color: 0xffa04a, maxScale: 11.5, duration: 2.1, opacity: 0.38 * waveOpacity, startScale: 3.2 });
+    this.wave(origin, { color: 0xff7a9a, maxScale: 6.4, duration: 1.35, opacity: 0.3 * waveOpacity, startScale: 2 });
 
     // Plasma loops around the limb.
     for (let i = 0; i < 4; i += 1) {

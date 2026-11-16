@@ -324,11 +324,12 @@ function doBurst() {
 }
 
 function handleBurst() {
-  fx.eruption(sun.scale * 1.02);
-  sun.pulse(0.95);
-  cameraRig.shake(0.32);
-  flashScreen();
-  world.bloomBoost = 0.3;
+  const soft = coarsePointer;
+  fx.eruption(sun.scale * 1.02, { sparkCount: soft ? 140 : 250, waveOpacity: soft ? 0.45 : 1 });
+  sun.pulse(soft ? 0.34 : 0.95);
+  cameraRig.shake(soft ? 0.2 : 0.32);
+  flashScreen(soft ? 0.4 : 1);
+  world.bloomBoost = soft ? 0.08 : 0.3;
   audio.burst();
   toast('☀️ 太阳爆发！', 2200);
   spawnFloat('爆发！', window.innerWidth / 2, window.innerHeight * 0.38, 'gold');
@@ -398,7 +399,8 @@ function spawnFloat(text, x, y, kind = '') {
   window.setTimeout(() => el.remove(), 1400);
 }
 
-function flashScreen() {
+function flashScreen(strength = 1) {
+  dom.flash.style.setProperty('--flash-opacity', String(clamp(strength, 0.2, 1)));
   dom.flash.classList.add('on');
   window.setTimeout(() => dom.flash.classList.remove('on'), 80);
 }
@@ -649,4 +651,3 @@ boot().catch((error) => {
   console.error('[sunny] boot failed', error);
   showFatal(error);
 });
-

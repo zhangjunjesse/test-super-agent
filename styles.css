@@ -777,7 +777,7 @@ body:not(.playing) .hint { display: none; }
   transition: opacity 0.45s ease-out;
 }
 .flash.on {
-  opacity: 1;
+  opacity: var(--flash-opacity, 1);
   transition: opacity 0.06s ease-in;
 }
 
