@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07051a" />
+  <title>小太阳 Sunny · 3D 可玩的小太阳</title>
+  <meta name="description" content="用 three.js 做的 3D 可玩小太阳：拖动旋转宇宙，收集星光让它长大，还能来一场太阳爆发。" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='42%25' cy='38%25' r='62%25'%3E%3Cstop offset='0' stop-color='%23fff3c4'/%3E%3Cstop offset='.55' stop-color='%23ffb347'/%3E%3Cstop offset='1' stop-color='%23ff6a3d'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='18' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <canvas id="scene" class="scene" aria-label="3D 小太阳场景：一颗发光的太阳，周围漂着可以收集的星尘与行星" role="img"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="scene-tint" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-sun" aria-hidden="true"></span>
+        <div class="brand-text">
+          <h1>小太阳 <em>Sunny</em></h1>
+          <p>一颗可以玩的小太阳</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="sound-btn" type="button" aria-pressed="true" aria-label="关闭声音" title="声音（M）">
+          <svg class="icon icon-sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4z"/><path class="wave" d="M15.6 9.2a4 4 0 0 1 0 5.6M18.1 6.7a7.5 7.5 0 0 1 0 10.6"/></svg>
+          <svg class="icon icon-sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4z"/><path d="m15.5 9.5 5 5m0-5-5 5"/></svg>
+        </button>
+        <button class="icon-btn" id="help-btn" type="button" aria-label="查看玩法说明" title="怎么玩（H）">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 9.2a2.7 2.7 0 1 1 3.7 2.5c-.9.4-1.2.9-1.2 1.8"/><circle cx="11.95" cy="17" r="1.1" class="dot"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="stats hud" id="stats" aria-label="我的小太阳">
+      <div class="stat">
+        <span class="stat-icon" aria-hidden="true">✦</span>
+        <span class="stat-value" id="score">0</span>
+        <span class="stat-label">星光</span>
+      </div>
+      <span class="stat-divider" aria-hidden="true"></span>
+      <div class="stat">
+        <span class="level-badge" id="level">Lv.1</span>
+        <span class="stat-label" id="level-name">初升</span>
+      </div>
+    </section>
+
+    <section class="power hud" id="power" aria-label="太阳能量">
+      <div class="power-main">
+        <div class="power-head">
+          <span class="power-label">太阳能量</span>
+          <span class="power-pct" id="power-pct">0%</span>
+        </div>
+        <div class="power-track" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="太阳能量" id="power-meter">
+          <div class="power-fill" id="power-fill"></div>
+        </div>
+      </div>
+      <button class="burst-btn" id="burst-btn" type="button" disabled>
+        <span class="burst-glyph" aria-hidden="true">☀</span>
+        <span class="burst-text">太阳爆发</span>
+      </button>
+    </section>
+
+    <p class="hint" id="hint">
+      <span aria-hidden="true">🖱️</span> 拖动旋转宇宙
+      <span class="hint-dot" aria-hidden="true">·</span>
+      <span aria-hidden="true">✨</span> 点击星尘收集
+      <span class="hint-dot" aria-hidden="true">·</span>
+      <span aria-hidden="true">☀️</span> 戳戳太阳
+    </p>
+
+    <div class="float-layer" id="float-layer" aria-hidden="true"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <div class="overlay start-overlay" id="start-screen">
+      <div class="start-card">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> THREE.JS · 3D 小宇宙</p>
+        <h2 class="start-title">小太阳 <span>Sunny</span></h2>
+        <p class="start-sub">一颗可以玩的小太阳，<br class="mobile-break" />正在等你把它点亮。</p>
+        <ul class="start-features">
+          <li><span aria-hidden="true">🖱️</span>拖动旋转宇宙</li>
+          <li><span aria-hidden="true">✨</span>点击收集星光</li>
+          <li><span aria-hidden="true">☀️</span>戳戳太阳放烟花</li>
+        </ul>
+        <button class="start-btn" id="start-btn" type="button" disabled>
+          <span class="start-btn-label">正在点亮…</span>
+        </button>
+        <p class="start-note">滚轮 / 双指缩放 · 空格爆发 · M 静音</p>
+      </div>
+    </div>
+
+    <div class="overlay help-overlay" id="help-screen" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <div class="modal-head">
+          <h2 id="help-title">怎么玩</h2>
+          <button class="icon-btn small" id="help-close" type="button" aria-label="关闭玩法说明">✕</button>
+        </div>
+        <dl class="help-list">
+          <div><dt>拖动</dt><dd>旋转视角，看看太阳的四周</dd></div>
+          <div><dt>点击星尘</dt><dd>收集闪光的小星尘，小太阳会长大</dd></div>
+          <div><dt>点击太阳</dt><dd>戳一下，放一束太阳烟花</dd></div>
+          <div><dt>太阳能量满格</dt><dd>点「太阳爆发」或按空格，来一场日冕爆发</dd></div>
+          <div><dt>滚轮 / 双指</dt><dd>拉近拉远；按 R 回到初始视角</dd></div>
+          <div><dt>M / H</dt><dd>静音 / 打开这份说明</dd></div>
+        </dl>
+        <button class="start-btn small" id="help-ok" type="button">知道啦</button>
+      </div>
+    </div>
+
+    <div class="loading" id="loading" role="status">
+      <span class="spinner" aria-hidden="true"></span>
+      <span id="loading-text">正在点燃小太阳…</span>
+    </div>
+
+    <div class="error-panel" id="error-panel" hidden>
+      <h2>小太阳没能升起来</h2>
+      <p id="error-text">请确认浏览器支持 WebGL，并通过本地服务器打开页面。</p>
+      <p class="error-tip">在项目目录运行 <code>python -m http.server 8000</code>，再打开 <code>http://localhost:8000</code>。</p>
+    </div>
+
+    <footer class="credit" aria-hidden="true">made with three.js · 小太阳 Sunny</footer>
+    <div class="flash" id="flash" aria-hidden="true"></div>
+  </div>
+
+  <noscript>
+    <p class="noscript">这个 3D 小宇宙需要 JavaScript 才能点亮，请开启后再来看看。</p>
+  </noscript>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    const loading = document.getElementById('loading');
+    const errorPanel = document.getElementById('error-panel');
+    const errorText = document.getElementById('error-text');
+
+    import('./src/main.js').catch((error) => {
+      console.error('[sunny] failed to boot:', error);
+      loading.hidden = true;
+      errorPanel.hidden = false;
+      if (!navigator.onLine) {
+        errorText.textContent = '网络好像断开了，three.js 需要从 CDN 加载。连上网络后刷新页面试试。';
+      }
+    });
+  </script>
+</body>
+</html>
